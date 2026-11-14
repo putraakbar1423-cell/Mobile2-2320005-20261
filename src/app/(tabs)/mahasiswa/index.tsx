@@ -11,7 +11,7 @@ import {
 } from "react-native";
 
 import { useMahasiswa } from "../../../context/mahasiswacontext";
-import { getInitialURL } from "expo-router/build/link/linking";
+import { Ionicons } from "@expo/vector-icons";
 
 export default function DataMahasiswaScreen() {
 
@@ -25,6 +25,7 @@ export default function DataMahasiswaScreen() {
     item.nama.toLowerCase().includes(search.toLowerCase())
   );
 
+  // Konfirmasi hapus mahasiswa
   const konfirmasiHapus = (id: string, nama: string) => {
     Alert.alert(
       "Konfirmasi Hapus",
@@ -43,14 +44,37 @@ export default function DataMahasiswaScreen() {
   return (
     <View style={styles.container}>
 
-      {/* Kolom Pencarian */}
-      <TextInput
-        style={styles.searchInput}
-        placeholder="Cari nama mahasiswa..."
-        value={search}
-        onChangeText={setSearch}
-      />
+      {/* Kolom Pencarian dengan Icon */}
+      <View style={styles.searchContainer}>
 
+        <Ionicons
+          name="search-outline"
+          size={22}
+          color="#94a3b8"
+        />
+
+        <TextInput
+          style={styles.searchInput}
+          placeholder="Cari nama mahasiswa..."
+          placeholderTextColor="#94a3b8"
+          value={search}
+          onChangeText={setSearch}
+        />
+
+        {/* Tombol Hapus Pencarian */}
+        {search.length > 0 && (
+          <TouchableOpacity onPress={() => setSearch("")}>
+            <Ionicons
+              name="close-circle"
+              size={20}
+              color="#94a3b8"
+            />
+          </TouchableOpacity>
+        )}
+
+      </View>
+
+      {/* Daftar Mahasiswa */}
       <FlatList
         data={filteredMahasiswa}
         keyExtractor={(item) => item.id}
@@ -84,13 +108,22 @@ export default function DataMahasiswaScreen() {
 
             {/* Informasi Identitas */}
             <View style={styles.infoArea}>
-              <Text style={styles.nama}>{item.nama}</Text>
-              <Text style={styles.subText}>NIM: {item.nim}</Text>
-              <Text style={styles.prodiText}>{item.prodi}</Text>
+              <Text style={styles.nama}>
+                {item.nama}
+              </Text>
+
+              <Text style={styles.subText}>
+                NIM: {item.nim}
+              </Text>
+
+              <Text style={styles.prodiText}>
+                {item.prodi}
+              </Text>
             </View>
 
             {/* Badge Status dan Tombol Hapus */}
             <View style={{ alignItems: "flex-end", gap: 6 }}>
+
               <View
                 style={[
                   styles.badge,
@@ -112,12 +145,16 @@ export default function DataMahasiswaScreen() {
               </View>
 
               <TouchableOpacity
-                onPress={() => konfirmasiHapus(item.id, item.nama)}
+                onPress={() =>
+                  konfirmasiHapus(item.id, item.nama)
+                }
               >
-                <Text style={styles.hapusText}>Hapus</Text>
+                <Text style={styles.hapusText}>
+                  Hapus
+                </Text>
               </TouchableOpacity>
-            </View>
 
+            </View>
           </View>
         )}
       />
@@ -126,23 +163,35 @@ export default function DataMahasiswaScreen() {
 }
 
 const styles = StyleSheet.create({
+
   container: {
     flex: 1,
     backgroundColor: "#f8fafc",
   },
 
-  // Style pencarian
-  searchInput: {
+  // Container pencarian
+  searchContainer: {
+    flexDirection: "row",
+    alignItems: "center",
     backgroundColor: "#ffffff",
     marginHorizontal: 16,
     marginTop: 16,
     marginBottom: 4,
     paddingHorizontal: 14,
-    paddingVertical: 12,
-    borderRadius: 8,
+    borderRadius: 10,
     borderWidth: 1,
     borderColor: "#e2e8f0",
+    height: 50,
+  },
+
+  // Input pencarian
+  searchInput: {
+    flex: 1,
+    height: "100%",
     fontSize: 14,
+    color: "#1e293b",
+    marginLeft: 10,
+    paddingVertical: 0,
   },
 
   listArea: {
@@ -219,16 +268,16 @@ const styles = StyleSheet.create({
   },
 
   badgeTextActive: {
-    color: "#16a34a",
+    color: "#ffffffff",
   },
 
   badgeTextInactive: {
-    color: "#dc2626",
+    color: "#f1e9e9ff",
   },
 
   hapusText: {
     fontSize: 11,
-    color: "#dc2626",
+    color: "#f2eeeeff",
     fontWeight: "600",
   },
 
@@ -248,4 +297,5 @@ const styles = StyleSheet.create({
     color: "#94a3b8",
     marginTop: 4,
   },
+
 });

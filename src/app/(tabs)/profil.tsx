@@ -1,29 +1,34 @@
-import { View, Text, StyleSheet } from 'react-native'
-import React from 'react'
-
-export default function profil() {
-  return (
-    <View style={styles.container}>
-      <Text style={styles.title}>Profil Pengguna</Text>
-      <Text style={styles.subtitle}>informasi data akun dan pengaturan pribadi</Text>
-    </View>
-  )
+import { tabStyles } from "../../styles/tabstyles";
+import { Ionicons } from "@expo/vector-icons";
+import { router } from "expo-router";
+import { ScrollView, Text, TouchableOpacity, View } from "react-native";
+export default function ProfilScreen() {
+const handleLogout = () => {
+router.replace("/login");
+};
+return (
+<ScrollView
+style={tabStyles.screenContainer}
+contentContainerStyle={tabStyles.scrollContent}
+showsVerticalScrollIndicator={false}
+>
+<View style={tabStyles.card}>
+<View style={tabStyles.profileAvatar}>
+<Ionicons name="people" size={30} color="#2563EB" />
+</View>
+<Text style={tabStyles.sectionTitle}>Profil Pengguna</Text>
+<Text style={tabStyles.sectionSubtitle}>
+Informasi akun aktif dan pengaturan sesi aplikasi Mobile 2.
+</Text>
+</View>
+<TouchableOpacity
+style={tabStyles.logoutButton}
+activeOpacity={0.8}
+onPress={handleLogout}
+>
+<Ionicons name="log-out-outline" size={20} color="#DC2626" />
+<Text style={tabStyles.logoutButtonText}>Keluar dari Akun</Text>
+</TouchableOpacity>
+</ScrollView>
+);
 }
-
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    justifyContent: 'center',
-    alignItems: 'center',
-    backgroundColor: '#f5f5f5',
-    padding: 20,
-  },
-  title: {
-    fontSize: 24,
-    fontWeight: 'bold',
-  },
-  subtitle: {
-    fontSize: 16,
-    color: 'gray',
-  },
-})
